@@ -4,7 +4,7 @@ import java.util.Scanner;  // Needed for the Scanner class
    This program demonstrates the Scanner class.
 */
 
-public class ass1
+public class PayrollDialog
 {
    public static void main(String[] args)
    {
@@ -27,7 +27,7 @@ public class ass1
 	  in1 = name.charAt(sl-2);
 	  index = String.valueOf(in1);
 	  name.concat(index);
-  	  i1 = name.substring(sl-3, sl-3);
+  	  in1 = name.substring(sl-3, sl-3);
 	  in1 = name.charAt(sl-2);
 	  index = String.valueOf(in1);
 	  name.concat(index);
