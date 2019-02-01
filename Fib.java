@@ -17,9 +17,10 @@ public class Fib {
         return (numbers);
     }
     public static void main(String[] args) {
+		int iter = 1000000;
         Scanner reader = new Scanner(System.in);
-        long[] sequence = new long[1000];
-        sequence = generator(1000);
+        long[] sequence = new long[iter];
+        sequence = generator(iter);
         // System.out.println("Enter query: ");
         // int query = reader.nextInt();
     }
