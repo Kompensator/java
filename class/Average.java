@@ -5,41 +5,38 @@ import java.util.Scanner;
 /**
  * Computes and displays the average of three integer values.
  *
- * @author     Carmen Legendre/Alex Simonelis
- * @version    09/03/2010
+ * @author     Carmen Legendre/Alex Simonelis/Ding Yi Zhang
+ * @version    28/01/2018
  */
 
 public class Average
 {
-    public static void main (String[] args)
-    {
-	//variable declarations
-	Scanner keyboard =  new Scanner(System.in);
-	int number1, number2;
-	double average;
+    public static void main (String[] args){
+		// try to run everything, catch all errors
+		try {
+		Scanner keyboard =  new Scanner(System.in);
+		double average;
+		System.out.println("Enter the number of numbers xD");
+		int n = keyboard.nextInt();
+		double sum = 0;
+		for (int i = 0; i < n; i ++) {
+			System.out.print("Enter number in base 10 > ");
+			double number = keyboard.nextDouble();
+			sum += number;
+		}
+		average = sum/n;
+		System.out.println("Average is "+average);
+		keyboard.close();
+	}
+		catch (Exception e) {
+			System.out.println("something happened! Sorry! The program will rerun.");
+			main(null);
+		}
 
-	//Accept the required data
+	} // end of main()
 
-	System.out.print ("Enter the first number: ");
-	number1 = keyboard.nextInt();
+} //end of class
 
-	System.out.print ("Enter the second number: ");
-	number2 = keyboard.nextInt();
-
-	//Process the data in order to determine the average of the numbers
-	average = (number1 + number2) / 2;
-
-	//Display the output
-	System.out.println ("************** Average ****************");
-	System.out.println ();
-	System.out.println ("Number 1:             " + number1);
-	System.out.println ("Number 2:             " + number2);
-	System.out.println ();
-	System.out.println ("Average:              " + average);
-	System.out.println ("\n\nWritten by: Carmen Legendre/Alex Simonelis");
-
-    } //end main method
-} //end Average class
 
 
 
