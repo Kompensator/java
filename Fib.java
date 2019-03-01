@@ -17,11 +17,18 @@ public class Fib {
         return (numbers);
     }
     public static void main(String[] args) {
+<<<<<<< HEAD
 		int iter = 1000000;
         Scanner reader = new Scanner(System.in);
         long[] sequence = new long[iter];
         sequence = generator(iter);
         // System.out.println("Enter query: ");
         // int query = reader.nextInt();
+=======
+        int limit;
+        limit = Integer.parseInt(args[0]);
+        long[] sequence = new long[limit];
+        sequence = generator(limit);
+>>>>>>> f2625d112763e9184a34c53a83db0fb84e4fea29
     }
 }

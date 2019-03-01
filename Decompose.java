@@ -3,7 +3,8 @@ import java.util.Scanner;
 
 public class Decompose{
     static int[] decToBin(int dec){
-        int[] bin = new int[8];
+// THIS IS THE SIZE OF THE ARRAY
+        int[] bin = new int[32];
         while (dec != 0) {
             int n;
             n = fitPower(dec);
