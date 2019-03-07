@@ -59,7 +59,7 @@ public class twoBody {
 		while(r >= diam) {
 			
 			
-			ax1 =(dx/r)*((G*m1)/(r*r));
+			ax1 =(dx/r)*((G*m2)/(r*r));
 			vx1 = vx1 + ax1*dt;
 			x1 = x1 + vx1*dt;
 			
@@ -68,7 +68,7 @@ public class twoBody {
 			x2 = x2 + vx2*dt;
 			
 			
-			ay1 =(dy/r)*((G*m1)/(r*r));
+			ay1 =(dy/r)*((G*m2)/(r*r));
 			vy1 = vy1 + ay1*dt;
 			y1 = y1 + vy1*dt;
 			
@@ -91,6 +91,7 @@ public class twoBody {
 		}
 		
 		writer.close();
+		kbrd.close();
 		
 		System.out.println("\nCollision occured at (" + x1 + ", " + y1 +") , after " + ctr*dt + " seconds.");
 		

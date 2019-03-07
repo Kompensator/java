@@ -1,7 +1,8 @@
 public class Body {
     // Attributes: x, y, vx, vy, ax, ay, mass, radius
-    double x, y, mass, vx, vy, ax, ay, radius;
+    double x, y, mass, vx, vy, ax, ay, radius,temp_x,temp_y;
     String name;
+    boolean merged;      // for two bodies merging into one
 
     public Body (double x, double y, double vx, double vy, double mass, double radius, String name) {
         // constructor
@@ -14,6 +15,9 @@ public class Body {
         this.name = name;
         this.ax = 0;
         this.ay = 0;
+        this.temp_x = x;
+        this.temp_y = y;
+        this.merged = false;
     }
 
     public void updateAcceleration (Body[] bodies) {
@@ -30,13 +34,14 @@ public class Body {
                 catch (ArithmeticException e){
                     temp_acc = 0;
                 }
-            
-            this.ax += temp_acc * (otherBody.x - this.x);
-            this.ay += temp_acc * (otherBody.y - this.y);
+
+                this.ax += temp_acc * (otherBody.x - this.x);
+                this.ay += temp_acc * (otherBody.y - this.y);
             }
         }
 
     }
+
     public void updateVelocity (Body[] bodies, int dt) {
         // computes the updated velocity with ax and ay
         this.updateAcceleration(bodies);
@@ -44,21 +49,34 @@ public class Body {
         this.vy += this.ay * dt;
     }
 
-    public void updatePosition(Body[] bodies, int dt) {
-        // updates the x, y
+    public void calculatePosition(Body[] bodies, int dt) {
+        // calculates the new positions and stores them in temp_x and temp_y
         this.updateVelocity(bodies, dt);
-        this.x += this.vx * dt;
-        this.y += this.vy * dt;
+        this.temp_x += this.vx * dt;
+        this.temp_y += this.vy * dt;
     }
-    public static void main (String[] poop) {
+
+    public void updatePosition() {
+        // this method should be called after calling calculatePosition
+        // replaces position with temporary values
+
+        this.x = this.temp_x;
+        this.y = this.temp_y;
+    }
+
+    public static void main(String[] poop) {
+
+        // for testing
         Body[] bodies = new Body[2];
-        int dt = 10;
+        int dt = 3600;
         bodies[0] = new Body(0,0,0,0,2e30,50000, "Sun");
         bodies[1] = new Body(1.47e10,0,0,3e4,6e24,1000, "Earth 2");
         for (int i = 0; i < 1000; i ++){
-            bodies[0].updatePosition(bodies,dt);
-            bodies[1].updatePosition(bodies,dt);
-            // System.out.println(bodies[0].x);
+            bodies[0].calculatePosition(bodies,dt);
+            bodies[1].calculatePosition(bodies,dt);
+            bodies[0].updatePosition();
+            bodies[1].updatePosition();
+            System.out.println(bodies[0].x);
             System.out.println(bodies[0].y);
 
         }
