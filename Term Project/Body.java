@@ -64,21 +64,5 @@ public class Body {
         this.y = this.temp_y;
     }
 
-    public static void main(String[] poop) {
-
-        // for testing
-        Body[] bodies = new Body[2];
-        int dt = 3600;
-        bodies[0] = new Body(0,0,0,0,2e30,50000, "Sun");
-        bodies[1] = new Body(1.47e10,0,0,3e4,6e24,1000, "Earth 2");
-        for (int i = 0; i < 1000; i ++){
-            bodies[0].calculatePosition(bodies,dt);
-            bodies[1].calculatePosition(bodies,dt);
-            bodies[0].updatePosition();
-            bodies[1].updatePosition();
-            System.out.println(bodies[0].x);
-            System.out.println(bodies[0].y);
-
-        }
+    public static void main(String[] poop) {;}
     }
-}

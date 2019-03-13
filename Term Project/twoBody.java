@@ -54,8 +54,6 @@ public class twoBody {
 			begin = kbrd.nextLine();
 		}
 		
-		
-		
 		while(r >= diam) {
 			
 			
@@ -81,13 +79,8 @@ public class twoBody {
 		 
 			
 			writer.write(x1 + ", " + y1 + " : " + x2 + ", " + y2 + "\n");
-			//System.out.println(ctr);
 			
-			
-			ctr++;
-			
-			//System.out.print("\nR: " + Math.abs(dx) + " t: " + ctr*dt + " vx2: " + x1 + " vx1: " + y1);
-		
+			ctr++;		
 		}
 		
 		writer.close();
