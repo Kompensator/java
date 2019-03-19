@@ -1,8 +1,10 @@
+package body;
+
 public class Body {
     // Attributes: x, y, vx, vy, ax, ay, mass, radius
-    double x, y, mass, vx, vy, ax, ay, radius,temp_x,temp_y;
-    String name;
-    boolean merged;      // for two bodies merging into one
+    public double x, y, mass, vx, vy, ax, ay, radius,temp_x,temp_y;
+    public String name;
+    public boolean merged;      // for two bodies merging into one
 
     public Body (double x, double y, double vx, double vy, double mass, double radius, String name) {
         // constructor
