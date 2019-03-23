@@ -1,6 +1,6 @@
 #! /bin/bash
 
 echo Running Simulation
-java Writer
+java Verlet
 echo Animating...
 python animate.py
