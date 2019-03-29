@@ -2,7 +2,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.*;
 
-public class Verlet {
+public class VerletCollision {
 
 	public static final int dt = 7200;
 
@@ -10,7 +10,7 @@ public class Verlet {
         File file = new File("/Users/DY/java/Term Project/position.data");
         FileWriter writer = new FileWriter(file);
 
-        int n = 20;      // number of bodies
+        int n = 50;      // number of bodies
         double simTime = 1e9;
         long totalSteps = (long) Math.round(simTime / dt);
 
@@ -18,14 +18,16 @@ public class Verlet {
         // add Bodie to bodies
         for (int i = 0; i < n; i ++) {
             String bodyName = "Body" + i;
-            bodies[i] = new Body(randint(-5e11, 5e11), randint(-5e11, 5e11), randint(-1e5, 1e5), randint(-1e5, 1e5), 2e30, 1e5, bodyName);
+            bodies[i] = new Body(randint(-5e11, 5e11), randint(-5e11, 5e11), randint(-1e5, 1e5), randint(-1e5, 1e5), 2e30, 5e6, bodyName);
         }
         // bodies[0] = new Body(1.5e11, 0, 0, 3e4, 6e24, 1e6, "Earth");
         // bodies[1] = new Body(0, 0, 0, 0, 2e30, 1e6, "Sun");
 
         for (int step = 0; step < totalSteps; step++) {
             for (int i = 0; i < n; i ++) {
-                bodies[i].calculatePosition(bodies, dt);
+                if (bodies[i].merged == false) {
+                    bodies[i].calculatePosition(bodies, dt);
+                }
             }
 
             for (int i = 0; i < n; i ++) {
@@ -54,8 +56,7 @@ class Body {
     double x, y, mass, vx, vy, ax, ay, axplusone, ayplusone, radius,temp_x,temp_y;
     String name;
     boolean merged;      // for two bodies merging into one
-    public static final int dt = 7200;
-    public static final double G = 6.6740831e-11;
+	public static final int dt = 7200;
 
     public Body (double x, double y, double vx, double vy, double mass, double radius, String name) {
         // constructor
@@ -75,11 +76,39 @@ class Body {
         this.merged = false;
     }
 
+    public boolean collisionDetection(Body body) {
+        /* returns true if the body is collided with another body
+        */ 
+        boolean collision = false;      // default: no collision
+        if (body.name != this.name) {
+            double r = Math.sqrt(Math.pow((this.x - body.x),2) + Math.pow((this.y - body.y),2));
+            if (r <= (body.radius + this.radius)) {
+                collision = true;    // collision detected 
+            }
+        }
+            
+        return collision;
+    }
+
     public void updateAcceleration (Body[] bodies) {
-        // updates ax and ay of the body with respect to other bodies
+        /* updates ax and ay of the body with respect to other bodies
+        */
+        boolean collision;
+        final double G = 6.6740831e-11;
         for (int i = 0; i < bodies.length; i ++) {
             Body otherBody = bodies[i];
-            if (otherBody.name != this.name) {       // makes sure a body doesn't calculate acc on itself
+            collision = this.collisionDetection(otherBody);
+            if (collision == true) {
+                if (this.mass <= otherBody.mass) {
+                    this.merged = true;
+                    otherBody.mass += this.mass;
+                } else {
+                    otherBody.merged = true; 
+                    this.mass += otherBody.mass;
+                }
+                
+            }
+            if (otherBody.name != this.name){       // makes sure a body doesn't calculate acc on itself
                 double r = Math.sqrt(Math.pow((this.x - otherBody.x),2) + Math.pow((this.y - otherBody.y),2));
                 double temp_acc;
                 try {
@@ -93,11 +122,11 @@ class Body {
                 this.ay += temp_acc * (otherBody.y - this.y);
             }
 
-			if (otherBody.name != this.name){
-				double thisxplus = this.x + this.vx * dt; double thisyplus = this.y + this.vy * dt;
-				double otherxplus = otherBody.x + otherBody.vx * dt; double otheryplus = otherBody.y + otherBody.vy * dt;
+            if (otherBody.name != this.name){
+                double thisxplus = this.x + this.vx * dt; double thisyplus = this.y + this.vy * dt;
+                double otherxplus = otherBody.x + otherBody.vx * dt; double otheryplus = otherBody.y + otherBody.vy * dt;
 
-				double r = Math.sqrt(Math.pow((thisxplus - otherxplus),2) + Math.pow((thisyplus - otheryplus),2));
+                double r = Math.sqrt(Math.pow((thisxplus - otherxplus),2) + Math.pow((thisyplus - otheryplus),2));
                 double temp_acc;
                 try {
                     temp_acc = (G * otherBody.mass)/Math.pow(r,3);       // temp_acc * deltax = ax
@@ -107,20 +136,22 @@ class Body {
                 }
                 this.axplusone += temp_acc * (otherxplus - thisxplus);
                 this.ayplusone += temp_acc * (otheryplus - thisyplus);
-			}
+            }
         }
 
     }
 
     public void updateVelocity (Body[] bodies, int dt) {
-        // computes the updated velocity with ax and ay
+        /* computes the updated velocity with ax and ay
+        */
         this.updateAcceleration(bodies);
         this.vx += 0.5 * (this.ax + this.axplusone) * dt;
         this.vy += 0.5 * (this.ay + this.ayplusone) * dt;
     }
 
     public void calculatePosition(Body[] bodies, int dt) {
-        // calculates the new positions and stores them in temp_x and temp_y
+        /* calculates the new positions and stores them in temp_x and temp_y
+        */
         this.updateVelocity(bodies, dt);
         this.temp_x += this.vx * dt + 0.5 * this.ax * dt * dt;
         this.temp_y += this.vy * dt + 0.5 * this.ay * dt * dt;
