@@ -29,8 +29,7 @@ class body():
 
 def update(frame):
     trail_x, trail_y = [], []
-    # n = 5
-    # number_of_dots = 500
+
     for i in range(n):
         animated_bodies[i].set_data(bodies[i].x[frame], bodies[i].y[frame])
     
@@ -46,6 +45,12 @@ def update(frame):
             trail_y.append(body.y[(frame-number_of_dots):frame])
    
     animated_bodies[n].set_data(trail_x,trail_y)
+    
+    # if frame == 20:
+    #     animated_bodies[1].set_markerfacecolor("#00FF00")
+    #     animated_bodies[1].set_markeredgecolor("#00FF00")
+    #     animated_bodies[1].set_markersize(10)
+
     
     return animated_bodies
 
@@ -75,13 +80,13 @@ for i in range(n):
 # creating trail of bodies
 trail, = plt.plot([], [], 'bo', markersize=0.2, animated=True)
 animated_bodies.append(trail)
-ani = FuncAnimation(fig, update, interval=1, blit=True)
+
+
+ani = FuncAnimation(fig, update, range(1,50) ,interval=1, blit=True)
+
+# ani.save("Animation.html")
+
+
 plt.show()
-
-
-# fig1 = plt.figure()
-# im_ani = animation.ArtistAnimation(fig1, ims, interval=50, repeat_delay=3000,
-#                                    blit=True)
-# im_ani.save('im.mp4', writer=writer)
 
 

@@ -11,7 +11,7 @@ public class Verlet {
         FileWriter writer = new FileWriter(file);
 
         int n = 20;      // number of bodies
-        double simTime = 1e9;
+        double simTime = 1e7;
         long totalSteps = (long) Math.round(simTime / dt);
 
         Body[] bodies = new Body[n];
